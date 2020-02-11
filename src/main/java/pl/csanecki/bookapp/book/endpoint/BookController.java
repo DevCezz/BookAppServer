@@ -4,7 +4,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
 import pl.csanecki.bookapp.book.endpoint.model.NewBook;
-import pl.csanecki.bookapp.book.endpoint.service.BookServiceImpl;
 
 import java.util.List;
 
@@ -12,7 +11,11 @@ import java.util.List;
 @RequestMapping("/books")
 public class BookController {
 
-    private BookService bookService = new BookServiceImpl();
+    private final BookService bookService;
+
+    public BookController(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
