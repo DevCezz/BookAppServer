@@ -1,12 +1,15 @@
 package pl.csanecki.bookapp.book.endpoint;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import pl.csanecki.bookapp.book.endpoint.response.NoBookFoundException;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
 import pl.csanecki.bookapp.book.endpoint.model.BookForm;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -54,5 +57,15 @@ public class BookController {
                 .orElseThrow(
                         () -> new NoBookFoundException(bookId)
                 );
+    }
+
+    @DeleteMapping(
+            value = "/{bookId}"
+    )
+    public ResponseEntity<Long> deleteBook(@PathVariable long bookId) {
+        bookService.deleteBookById(bookId)
+            .map(b -> ResponseEntity.status(HttpStatus.OK).build());
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
 }
