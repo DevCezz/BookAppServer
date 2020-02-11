@@ -1,5 +1,7 @@
 package pl.csanecki.bookapp.book.endpoint.model;
 
+import java.util.Objects;
+
 public class Book {
     public final long id;
     public final String title;
@@ -15,5 +17,23 @@ public class Book {
         this.publisher = publisher;
         this.publicationYear = publicationYear;
         this.numberOfPages = numberOfPages;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Book book = (Book) o;
+        return id == book.id &&
+                numberOfPages == book.numberOfPages &&
+                Objects.equals(title, book.title) &&
+                Objects.equals(author, book.author) &&
+                Objects.equals(publisher, book.publisher) &&
+                Objects.equals(publicationYear, book.publicationYear);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, author, publisher, publicationYear, numberOfPages);
     }
 }

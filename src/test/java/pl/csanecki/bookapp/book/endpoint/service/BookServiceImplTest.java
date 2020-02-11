@@ -1,19 +1,32 @@
 package pl.csanecki.bookapp.book.endpoint.service;
 
 import io.vavr.collection.List;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import pl.csanecki.bookapp.book.db.BookRepository;
 import pl.csanecki.bookapp.book.endpoint.BookService;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
 import pl.csanecki.bookapp.book.endpoint.model.NewBook;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class BookServiceImplTest {
+
+    @Autowired
+    private BookRepository bookRepository;
+
+    @AfterEach
+    void cleanAfterTest() {
+        bookRepository.deleteAll();
+    }
 
     @Test
     void shouldReturnEmptyList() {
         // given
-        final BookService bookService = new BookServiceImpl();
+        final BookService bookService = new BookServiceImpl(bookRepository);
 
         // when
         final List<Book> books = bookService.getBooks();
@@ -25,7 +38,7 @@ class BookServiceImplTest {
     @Test
     void shouldReturnIdOfBookWhenNewBookIsAdded() {
         // given
-        final BookService bookService = new BookServiceImpl();
+        final BookService bookService = new BookServiceImpl(bookRepository);
 
         // when
         final Book created = bookService.addBook(new NewBook("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
@@ -38,7 +51,7 @@ class BookServiceImplTest {
     @Test
     void shouldReturnAddedBookWhenAdded() {
         // given
-        final BookService bookService = new BookServiceImpl();
+        final BookService bookService = new BookServiceImpl(bookRepository);
         final Book created = bookService.addBook(new NewBook("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
                 "Media Rodzina", "2008", 368));
 
@@ -52,7 +65,7 @@ class BookServiceImplTest {
     @Test
     void shouldReturnedBookHasTheSameFieldsValuesAsNewBook() {
         // given
-        final BookService bookService = new BookServiceImpl();
+        final BookService bookService = new BookServiceImpl(bookRepository);
         final NewBook newBook = new NewBook("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
                 "Media Rodzina", "2008", 368);
 
@@ -70,7 +83,7 @@ class BookServiceImplTest {
     @Test
     void shouldReturnAddedBookWhichHasIdAndThereAreTwoBooks() {
         // given
-        final BookService bookService = new BookServiceImpl();
+        final BookService bookService = new BookServiceImpl(bookRepository);
 
         // when
         final Book firstCreated = bookService.addBook(new NewBook("Harry Potter i Komnata Tajemnic", "J.K. Rownling",

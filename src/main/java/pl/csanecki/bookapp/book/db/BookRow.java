@@ -21,6 +21,17 @@ public class BookRow {
 
     private int numberOfPages;
 
+    protected BookRow() {
+    }
+
+    public BookRow(String title, String author, String publisher, String publicationYear, int numberOfPages) {
+        this.title = title;
+        this.author = author;
+        this.publisher = publisher;
+        this.publicationYear = publicationYear;
+        this.numberOfPages = numberOfPages;
+    }
+
     public long getId() {
         return id;
     }
