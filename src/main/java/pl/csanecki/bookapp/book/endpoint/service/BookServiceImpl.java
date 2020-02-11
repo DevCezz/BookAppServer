@@ -8,8 +8,6 @@ import pl.csanecki.bookapp.book.endpoint.BookService;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
 import pl.csanecki.bookapp.book.endpoint.model.NewBook;
 
-import java.util.function.Function;
-
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -22,7 +20,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public List<Book> getBooks() {
         return List.ofAll(this.bookRepository.findAll())
-            .map(mapBookRowToBookFunction());
+            .map(BookRow::toBook);
     }
 
     @Override
@@ -35,17 +33,6 @@ public class BookServiceImpl implements BookService {
                 newBook.numberOfPages
         ));
 
-        return mapBookRowToBookFunction().apply(createdBook);
-    }
-
-    private Function<BookRow, Book> mapBookRowToBookFunction() {
-        return dbObj ->
-                new Book(
-                        dbObj.getId(),
-                        dbObj.getTitle(),
-                        dbObj.getAuthor(),
-                        dbObj.getPublisher(),
-                        dbObj.getPublicationYear(),
-                        dbObj.getNumberOfPages());
+        return createdBook.toBook();
     }
 }
