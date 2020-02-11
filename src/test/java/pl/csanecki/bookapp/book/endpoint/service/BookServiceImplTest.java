@@ -36,7 +36,7 @@ class BookServiceImplTest {
     @Test
     void shouldReturnEmptyList() {
         // when
-        final List<Book> books = bookService.getBooks();
+        final List<Book> books = bookService.getAllBooks();
 
         // then
         assertTrue(books.isEmpty());
@@ -59,7 +59,7 @@ class BookServiceImplTest {
                 "Media Rodzina", "2008", 368));
 
         // when
-        final List<Book> all = bookService.getBooks();
+        final List<Book> all = bookService.getAllBooks();
 
         // then
         assertEquals(created, all.head());
@@ -92,7 +92,7 @@ class BookServiceImplTest {
 
         // then
         assertNotEquals(firstCreated.id, secondCreated.id);
-        assertEquals(2, bookService.getBooks().size());
+        assertEquals(2, bookService.getAllBooks().size());
     }
 
     @Test
@@ -116,5 +116,26 @@ class BookServiceImplTest {
         assertEquals(editedData.publisher, edited.get().publisher);
         assertEquals(editedData.publicationYear, edited.get().publicationYear);
         assertEquals(editedData.numberOfPages, edited.get().numberOfPages);
+    }
+
+    @Test
+    void shouldReturnBookById() {
+        // given
+        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
+                "Media Rodzina", "2008", 368));
+
+        // when
+        final Optional<Book> searched = bookService.getBookById(created.id);
+
+        if(searched.isEmpty()) {
+            fail();
+        }
+
+        // then
+        assertEquals(created.title, searched.get().title);
+        assertEquals(created.author, searched.get().author);
+        assertEquals(created.publisher, searched.get().publisher);
+        assertEquals(created.publicationYear, searched.get().publicationYear);
+        assertEquals(created.numberOfPages, searched.get().numberOfPages);
     }
 }

@@ -7,7 +7,8 @@ import pl.csanecki.bookapp.book.endpoint.model.BookForm;
 import java.util.Optional;
 
 public interface BookService {
-    List<Book> getBooks();
+    List<Book> getAllBooks();
     Book addBook(final BookForm bookForm);
     Optional<Book> changeBookData(long bookId, BookForm bookForm);
+    Optional<Book> getBookById(long bookId);
 }
