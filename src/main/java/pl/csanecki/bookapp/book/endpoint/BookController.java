@@ -2,6 +2,7 @@ package pl.csanecki.bookapp.book.endpoint;
 
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+import pl.csanecki.bookapp.book.endpoint.response.NoBookFoundException;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
 import pl.csanecki.bookapp.book.endpoint.model.BookForm;
 
@@ -40,7 +41,7 @@ public class BookController {
     public Book changeBookData(@PathVariable long bookId, @RequestBody BookForm bookForm) {
         return bookService.changeBookData(bookId, bookForm)
                 .orElseThrow(
-                        () -> new IllegalArgumentException("Book of id:" + bookId + " does not exist.")
+                        () -> new NoBookFoundException(bookId)
                 );
     }
 }
