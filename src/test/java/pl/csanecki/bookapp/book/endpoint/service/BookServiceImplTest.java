@@ -138,4 +138,24 @@ class BookServiceImplTest {
         assertEquals(created.publicationYear, searched.get().publicationYear);
         assertEquals(created.numberOfPages, searched.get().numberOfPages);
     }
+
+    @Test
+    void shouldDeleteAddedBook() {
+        // given
+        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
+                "Media Rodzina", "2008", 368));
+
+        // when
+        final Optional<Book> deleted = bookService.deleteBookById(created.id);
+
+        if(deleted.isEmpty()) {
+            fail();
+        }
+
+        int numberOfBooks = bookService.getAllBooks().size();
+
+        // then
+        assertEquals(created.id, deleted.get().id);
+        assertEquals(0, numberOfBooks);
+    }
 }
