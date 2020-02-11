@@ -27,6 +27,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
+    public Optional<Book> getBookById(long bookId) {
+        return bookRepository.findById(bookId)
+                .map(BookRow::toBook);
+    }
+
+    @Override
     public Book addBook(BookForm bookForm) {
         BookRow createdBook = bookRepository.save(new BookRow(
                 bookForm.title,

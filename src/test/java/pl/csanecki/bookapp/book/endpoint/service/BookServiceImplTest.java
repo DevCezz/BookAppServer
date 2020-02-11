@@ -117,4 +117,25 @@ class BookServiceImplTest {
         assertEquals(editedData.publicationYear, edited.get().publicationYear);
         assertEquals(editedData.numberOfPages, edited.get().numberOfPages);
     }
+
+    @Test
+    void shouldReturnBookById() {
+        // given
+        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
+                "Media Rodzina", "2008", 368));
+
+        // when
+        final Optional<Book> searched = bookService.getBookById(created.id);
+
+        if(searched.isEmpty()) {
+            fail();
+        }
+
+        // then
+        assertEquals(created.title, searched.get().title);
+        assertEquals(created.author, searched.get().author);
+        assertEquals(created.publisher, searched.get().publisher);
+        assertEquals(created.publicationYear, searched.get().publicationYear);
+        assertEquals(created.numberOfPages, searched.get().numberOfPages);
+    }
 }

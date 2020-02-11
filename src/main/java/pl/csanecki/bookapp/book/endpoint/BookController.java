@@ -21,8 +21,19 @@ public class BookController {
     @GetMapping(
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public List<Book> getBook() {
+    public List<Book> getAllBooks() {
         return bookService.getBooks().asJava();
+    }
+
+    @GetMapping(
+            value = "/{bookId}",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Book getBookById(@PathVariable long bookId) {
+        return bookService.getBookById(bookId)
+                .orElseThrow(
+                        () -> new NoBookFoundException(bookId)
+                );
     }
 
     @PostMapping(
