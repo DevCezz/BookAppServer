@@ -1,7 +1,10 @@
 package pl.csanecki.bookapp.book.endpoint;
 
+import io.vavr.collection.List;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
+import pl.csanecki.bookapp.book.endpoint.model.NewBook;
 
 public interface BookService {
-    Book findBookById(long bookId);
+    List<Book> getBooks();
+    Book addBook(final NewBook newBook);
 }
