@@ -21,7 +21,7 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<Book> getBooks() {
+    public List<Book> getAllBooks() {
         return List.ofAll(this.bookRepository.findAll())
             .map(BookRow::toBook);
     }

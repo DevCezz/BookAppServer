@@ -22,7 +22,7 @@ public class BookController {
             produces = MediaType.APPLICATION_JSON_VALUE
     )
     public List<Book> getAllBooks() {
-        return bookService.getBooks().asJava();
+        return bookService.getAllBooks().asJava();
     }
 
     @GetMapping(

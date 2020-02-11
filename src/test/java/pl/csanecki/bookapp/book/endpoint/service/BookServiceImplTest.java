@@ -36,7 +36,7 @@ class BookServiceImplTest {
     @Test
     void shouldReturnEmptyList() {
         // when
-        final List<Book> books = bookService.getBooks();
+        final List<Book> books = bookService.getAllBooks();
 
         // then
         assertTrue(books.isEmpty());
@@ -59,7 +59,7 @@ class BookServiceImplTest {
                 "Media Rodzina", "2008", 368));
 
         // when
-        final List<Book> all = bookService.getBooks();
+        final List<Book> all = bookService.getAllBooks();
 
         // then
         assertEquals(created, all.head());
@@ -92,7 +92,7 @@ class BookServiceImplTest {
 
         // then
         assertNotEquals(firstCreated.id, secondCreated.id);
-        assertEquals(2, bookService.getBooks().size());
+        assertEquals(2, bookService.getAllBooks().size());
     }
 
     @Test
