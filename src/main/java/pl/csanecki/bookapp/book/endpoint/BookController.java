@@ -3,7 +3,7 @@ package pl.csanecki.bookapp.book.endpoint;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
-import pl.csanecki.bookapp.book.endpoint.model.NewBook;
+import pl.csanecki.bookapp.book.endpoint.model.BookForm;
 
 import java.util.List;
 
@@ -28,7 +28,19 @@ public class BookController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE
     )
-    public Book addBook(@RequestBody NewBook newBook) {
-        return bookService.addBook(newBook);
+    public Book addBook(@RequestBody BookForm bookForm) {
+        return bookService.addBook(bookForm);
+    }
+
+    @PutMapping(
+            value = "/{bookId}",
+            consumes = MediaType.APPLICATION_JSON_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Book changeBookData(@PathVariable long bookId, @RequestBody BookForm bookForm) {
+        return bookService.changeBookData(bookId, bookForm)
+                .orElseThrow(
+                        () -> new IllegalArgumentException("Book of id:" + bookId + " does not exist.")
+                );
     }
 }
