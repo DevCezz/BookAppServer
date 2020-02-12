@@ -69,4 +69,14 @@ public class BookController {
         return response
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+    @PostMapping(
+            value = "/{bookId}/desactivate"
+    )
+    public Book deactivateBook(@PathVariable long bookId) {
+        return bookService.deactivateBook(bookId)
+                .orElseThrow(
+                        () -> new NoBookFoundException(bookId)
+                );
+    }
 }
