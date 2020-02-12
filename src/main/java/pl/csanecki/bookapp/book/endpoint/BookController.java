@@ -71,10 +71,20 @@ public class BookController {
     }
 
     @PostMapping(
-            value = "/{bookId}/desactivate"
+            value = "/{bookId}/deactivate"
     )
     public Book deactivateBook(@PathVariable long bookId) {
         return bookService.deactivateBook(bookId)
+                .orElseThrow(
+                        () -> new NoBookFoundException(bookId)
+                );
+    }
+
+    @PostMapping(
+            value = "/{bookId}/activate"
+    )
+    public Book activateBook(@PathVariable long bookId) {
+        return bookService.activateBook(bookId)
                 .orElseThrow(
                         () -> new NoBookFoundException(bookId)
                 );

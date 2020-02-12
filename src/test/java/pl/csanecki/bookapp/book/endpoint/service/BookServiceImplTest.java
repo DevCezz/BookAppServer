@@ -175,4 +175,22 @@ class BookServiceImplTest {
         // then
         assertTrue(deactivated.get().deactivated);
     }
+
+    @Test
+    void shouldActivateDeactivatedBook() {
+        // given
+        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
+                "Media Rodzina", "2008", 368));
+        bookService.deactivateBook(created.id);
+
+        // when
+        final Optional<Book> activated = bookService.activateBook(created.id);
+
+        if(activated.isEmpty()) {
+            fail();
+        }
+
+        // then
+        assertFalse(activated.get().deactivated);
+    }
 }
