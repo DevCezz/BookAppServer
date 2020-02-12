@@ -2,11 +2,7 @@ package pl.csanecki.bookapp.book.db;
 
 import pl.csanecki.bookapp.book.endpoint.model.Book;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import java.util.function.Function;
+import javax.persistence.*;
 
 @Entity
 public class BookRow {
@@ -24,6 +20,8 @@ public class BookRow {
 
     private int numberOfPages;
 
+    private boolean deactivated;
+
     protected BookRow() {
     }
 
@@ -33,16 +31,19 @@ public class BookRow {
         this.publisher = publisher;
         this.publicationYear = publicationYear;
         this.numberOfPages = numberOfPages;
+        this.deactivated = false;
     }
 
     public Book toBook() {
         return new Book(
-                this.getId(),
-                this.getTitle(),
-                this.getAuthor(),
-                this.getPublisher(),
-                this.getPublicationYear(),
-                this.getNumberOfPages());
+            this.getId(),
+            this.getTitle(),
+            this.getAuthor(),
+            this.getPublisher(),
+            this.getPublicationYear(),
+            this.getNumberOfPages(),
+            this.isDeactivated()
+        );
     }
 
     public long getId() {
@@ -91,5 +92,13 @@ public class BookRow {
 
     public void setNumberOfPages(int numberOfPages) {
         this.numberOfPages = numberOfPages;
+    }
+
+    public boolean isDeactivated() {
+        return deactivated;
+    }
+
+    public void setDeactivated(boolean deactivated) {
+        this.deactivated = deactivated;
     }
 }

@@ -12,4 +12,5 @@ public interface BookService {
     Optional<Book> changeBookData(long bookId, BookForm bookForm);
     Optional<Book> getBookById(long bookId);
     Optional<Book> deleteBookById(long bookId);
+    Optional<Book> deactivateBook(long bookId);
 }
