@@ -63,16 +63,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> deleteBookById(long bookId) {
-        Optional<BookRow> book = bookRepository.findById(bookId);
-
-        return book.map(b -> {
-           bookRepository.delete(b);
-           return b.toBook();
-        });
-    }
-
-    @Override
     public Optional<Book> deactivateBook(long bookId) {
         final Optional<BookRow> book = bookRepository.findById(bookId);
 
@@ -92,6 +82,16 @@ public class BookServiceImpl implements BookService {
                     return b.toBook();
                 }
         );
+    }
+
+    @Override
+    public Optional<Book> deleteBookById(long bookId) {
+        Optional<BookRow> book = bookRepository.findById(bookId);
+
+        return book.map(b -> {
+           bookRepository.delete(b);
+           return b.toBook();
+        });
     }
 
     @Override
