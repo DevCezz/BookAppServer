@@ -51,12 +51,7 @@ public class BookServiceImpl implements BookService {
         final Optional<BookRow> book = bookRepository.findById(bookId);
 
         return book.map(b -> {
-                    b.setTitle(bookForm.title);
-                    b.setAuthor(bookForm.author);
-                    b.setPublisher(bookForm.publisher);
-                    b.setPublicationYear(bookForm.publicationYear);
-                    b.setNumberOfPages(bookForm.numberOfPages);
-
+                    b.updateBookData(bookForm);
                     return b.toBook();
                 }
         );
@@ -67,7 +62,7 @@ public class BookServiceImpl implements BookService {
         final Optional<BookRow> book = bookRepository.findById(bookId);
 
         return book.map(b -> {
-                    b.setDeactivated(true);
+                    b.deactivateBook();
                     return b.toBook();
                 }
         );
@@ -78,7 +73,7 @@ public class BookServiceImpl implements BookService {
         final Optional<BookRow> book = bookRepository.findById(bookId);
 
         return book.map(b -> {
-                    b.setDeactivated(false);
+                    b.activateBook();
                     return b.toBook();
                 }
         );

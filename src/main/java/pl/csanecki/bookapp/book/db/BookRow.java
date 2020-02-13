@@ -1,8 +1,10 @@
 package pl.csanecki.bookapp.book.db;
 
 import pl.csanecki.bookapp.book.endpoint.model.Book;
+import pl.csanecki.bookapp.book.endpoint.model.BookForm;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class BookRow {
@@ -22,6 +24,8 @@ public class BookRow {
 
     private boolean deactivated;
 
+    private LocalDateTime lastModificationTimestamp;
+
     protected BookRow() {
     }
 
@@ -32,73 +36,44 @@ public class BookRow {
         this.publicationYear = publicationYear;
         this.numberOfPages = numberOfPages;
         this.deactivated = false;
+        this.lastModificationTimestamp = LocalDateTime.now();
     }
 
     public Book toBook() {
         return new Book(
-            this.getId(),
-            this.getTitle(),
-            this.getAuthor(),
-            this.getPublisher(),
-            this.getPublicationYear(),
-            this.getNumberOfPages(),
-            this.isDeactivated()
+            this.id,
+            this.title,
+            this.author,
+            this.publisher,
+            this.publicationYear,
+            this.numberOfPages,
+            this.deactivated
         );
     }
 
-    public long getId() {
-        return id;
+    public void updateBookData(BookForm bookForm) {
+        this.title = bookForm.title;
+        this.author = bookForm.author;
+        this.publisher = bookForm.publisher;
+        this.publicationYear = bookForm.publicationYear;
+        this.numberOfPages = bookForm.numberOfPages;
+
+        updateLastModificationTimestamp();
     }
 
-    public void setId(long id) {
-        this.id = id;
+    public void deactivateBook() {
+        this.deactivated = true;
+
+        updateLastModificationTimestamp();
     }
 
-    public String getTitle() {
-        return title;
+    public void activateBook() {
+        this.deactivated = false;
+
+        updateLastModificationTimestamp();
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public String getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(String publisher) {
-        this.publisher = publisher;
-    }
-
-    public String getPublicationYear() {
-        return publicationYear;
-    }
-
-    public void setPublicationYear(String publicationYear) {
-        this.publicationYear = publicationYear;
-    }
-
-    public int getNumberOfPages() {
-        return numberOfPages;
-    }
-
-    public void setNumberOfPages(int numberOfPages) {
-        this.numberOfPages = numberOfPages;
-    }
-
-    public boolean isDeactivated() {
-        return deactivated;
-    }
-
-    public void setDeactivated(boolean deactivated) {
-        this.deactivated = deactivated;
+    private void updateLastModificationTimestamp() {
+        this.lastModificationTimestamp = LocalDateTime.now();
     }
 }
