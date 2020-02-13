@@ -89,4 +89,11 @@ public class BookController {
                         () -> new NoBookFoundException(bookId)
                 );
     }
+
+    @DeleteMapping(
+            value = "/deactivated"
+    )
+    public void deleteDeactivatedBooks() {
+        bookService.deleteAllDeactivatedBooks();
+    }
 }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 import pl.csanecki.bookapp.book.db.BookRepository;
 import pl.csanecki.bookapp.book.endpoint.BookService;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
@@ -15,6 +16,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Transactional
 @SpringBootTest
 class BookServiceImplTest {
 
@@ -110,12 +112,18 @@ class BookServiceImplTest {
             fail();
         }
 
+        final Optional<Book> checkDbBook = bookService.getBookById(edited.get().id);
+
+        if(checkDbBook.isEmpty()) {
+            fail();
+        }
+
         // then
-        assertEquals(editedData.title, edited.get().title);
-        assertEquals(editedData.author, edited.get().author);
-        assertEquals(editedData.publisher, edited.get().publisher);
-        assertEquals(editedData.publicationYear, edited.get().publicationYear);
-        assertEquals(editedData.numberOfPages, edited.get().numberOfPages);
+        assertEquals(editedData.title, checkDbBook.get().title);
+        assertEquals(editedData.author, checkDbBook.get().author);
+        assertEquals(editedData.publisher, checkDbBook.get().publisher);
+        assertEquals(editedData.publicationYear, checkDbBook.get().publicationYear);
+        assertEquals(editedData.numberOfPages, checkDbBook.get().numberOfPages);
     }
 
     @Test
@@ -172,8 +180,14 @@ class BookServiceImplTest {
             fail();
         }
 
+        final Optional<Book> checkDbBook = bookService.getBookById(deactivated.get().id);
+
+        if(checkDbBook.isEmpty()) {
+            fail();
+        }
+
         // then
-        assertTrue(deactivated.get().deactivated);
+        assertTrue(checkDbBook.get().deactivated);
     }
 
     @Test
@@ -190,7 +204,30 @@ class BookServiceImplTest {
             fail();
         }
 
+        final Optional<Book> checkDbBook = bookService.getBookById(activated.get().id);
+
+        if(checkDbBook.isEmpty()) {
+            fail();
+        }
+
         // then
-        assertFalse(activated.get().deactivated);
+        assertFalse(checkDbBook.get().deactivated);
+    }
+
+    @Test
+    void shouldDeleteDeactivatedBooks() {
+        // given
+        final Book firstCreated = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
+                "Media Rodzina", "2008", 368));
+        final Book secondCreated = bookService.addBook(new BookForm("Wiedźmin: Ostatnie życzenie","Andrzej Sapkowski",
+                "SuperNowa", "2014", 332));
+
+        bookService.deactivateBook(firstCreated.id);
+
+        // when
+        bookService.deleteAllDeactivatedBooks();
+
+        // then
+        assertEquals(1, bookService.getAllBooks().size());
     }
 }
