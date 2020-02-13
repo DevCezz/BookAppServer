@@ -127,13 +127,9 @@ class BookServiceImplTest {
                 "SuperNowa", "2014", 332);
 
         // when
-        final Optional<Book> edited = bookService.changeBookData(created.id, editedData);
+        bookService.changeBookData(created.id, editedData);
 
-        if(edited.isEmpty()) {
-            fail();
-        }
-
-        final Optional<Book> checkDbBook = bookService.getBookById(edited.get().id);
+        final Optional<Book> checkDbBook = bookService.getBookById(created.id);
 
         if(checkDbBook.isEmpty()) {
             fail();
@@ -154,13 +150,9 @@ class BookServiceImplTest {
                 "Media Rodzina", "2008", 368));
 
         // when
-        final Optional<Book> deactivated = bookService.deactivateBook(created.id);
+        bookService.deactivateBook(created.id);
 
-        if(deactivated.isEmpty()) {
-            fail();
-        }
-
-        final Optional<Book> checkDbBook = bookService.getBookById(deactivated.get().id);
+        final Optional<Book> checkDbBook = bookService.getBookById(created.id);
 
         if(checkDbBook.isEmpty()) {
             fail();
@@ -178,13 +170,9 @@ class BookServiceImplTest {
         bookService.deactivateBook(created.id);
 
         // when
-        final Optional<Book> activated = bookService.activateBook(created.id);
+        bookService.activateBook(created.id);
 
-        if(activated.isEmpty()) {
-            fail();
-        }
-
-        final Optional<Book> checkDbBook = bookService.getBookById(activated.get().id);
+        final Optional<Book> checkDbBook = bookService.getBookById(created.id);
 
         if(checkDbBook.isEmpty()) {
             fail();
@@ -219,9 +207,9 @@ class BookServiceImplTest {
         // given
         final Book firstCreated = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
                 "Media Rodzina", "2008", 368));
-        final Book secondCreated = bookService.addBook(new BookForm("Wiedźmin: Ostatnie życzenie","Andrzej Sapkowski",
-                "SuperNowa", "2014", 332));
 
+        bookService.addBook(new BookForm("Wiedźmin: Ostatnie życzenie","Andrzej Sapkowski",
+                "SuperNowa", "2014", 332));
         bookService.deactivateBook(firstCreated.id);
 
         // when
