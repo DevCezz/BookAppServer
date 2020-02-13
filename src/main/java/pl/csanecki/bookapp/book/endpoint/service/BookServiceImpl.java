@@ -11,6 +11,7 @@ import pl.csanecki.bookapp.book.endpoint.model.BookForm;
 
 import java.util.Optional;
 
+@Transactional
 @Service
 public class BookServiceImpl implements BookService {
 
@@ -45,7 +46,6 @@ public class BookServiceImpl implements BookService {
         return createdBook.toBook();
     }
 
-    @Transactional
     @Override
     public Optional<Book> changeBookData(long bookId, BookForm bookForm) {
         final Optional<BookRow> book = bookRepository.findById(bookId);
@@ -62,7 +62,6 @@ public class BookServiceImpl implements BookService {
         );
     }
 
-    @Transactional
     @Override
     public Optional<Book> deleteBookById(long bookId) {
         Optional<BookRow> book = bookRepository.findById(bookId);
@@ -73,7 +72,6 @@ public class BookServiceImpl implements BookService {
         });
     }
 
-    @Transactional
     @Override
     public Optional<Book> deactivateBook(long bookId) {
         final Optional<BookRow> book = bookRepository.findById(bookId);
@@ -85,7 +83,6 @@ public class BookServiceImpl implements BookService {
         );
     }
 
-    @Transactional
     @Override
     public Optional<Book> activateBook(long bookId) {
         final Optional<BookRow> book = bookRepository.findById(bookId);
@@ -95,5 +92,10 @@ public class BookServiceImpl implements BookService {
                     return b.toBook();
                 }
         );
+    }
+
+    @Override
+    public void deleteAllDeactivatedBooks() {
+        bookRepository.deleteByDeactivatedIsTrue();
     }
 }

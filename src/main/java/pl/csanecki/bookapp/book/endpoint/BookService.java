@@ -16,4 +16,6 @@ public interface BookService {
     Optional<Book> changeBookData(long bookId, BookForm bookForm);
     Optional<Book> deactivateBook(long bookId);
     Optional<Book> activateBook(long bookId);
+
+    void deleteAllDeactivatedBooks();
 }
