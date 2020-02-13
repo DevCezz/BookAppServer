@@ -63,10 +63,8 @@ public class BookController {
             value = "/{bookId}"
     )
     public ResponseEntity<Long> deleteBook(@PathVariable long bookId) {
-        Optional<ResponseEntity<Long>> response = bookService.deleteBookById(bookId)
-                .map(b -> ResponseEntity.status(HttpStatus.OK).body(b.id));
-
-        return response
+        return bookService.deleteBookById(bookId)
+                .map(b -> ResponseEntity.status(HttpStatus.OK).body(b.id))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
 

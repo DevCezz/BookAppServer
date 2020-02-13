@@ -11,11 +11,11 @@ public interface BookService {
     Optional<Book> getBookById(long bookId);
 
     Book addBook(final BookForm bookForm);
-    Optional<Book> deleteBookById(long bookId);
 
     Optional<Book> changeBookData(long bookId, BookForm bookForm);
     Optional<Book> deactivateBook(long bookId);
     Optional<Book> activateBook(long bookId);
 
+    Optional<Book> deleteBookById(long bookId);
     void deleteAllDeactivatedBooks();
 }
