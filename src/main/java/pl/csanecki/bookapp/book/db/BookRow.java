@@ -22,7 +22,7 @@ public class BookRow {
 
     private int numberOfPages;
 
-    private boolean deactivated;
+    private boolean read;
 
     private LocalDateTime lastModificationTimestamp;
 
@@ -35,7 +35,7 @@ public class BookRow {
         this.publisher = publisher;
         this.publicationYear = publicationYear;
         this.numberOfPages = numberOfPages;
-        this.deactivated = false;
+        this.read = false;
         this.lastModificationTimestamp = LocalDateTime.now();
     }
 
@@ -47,7 +47,7 @@ public class BookRow {
             this.publisher,
             this.publicationYear,
             this.numberOfPages,
-            this.deactivated
+            this.read
         );
     }
 
@@ -61,14 +61,14 @@ public class BookRow {
         updateLastModificationTimestamp();
     }
 
-    public void deactivateBook() {
-        this.deactivated = true;
+    public void markAsRead() {
+        this.read = true;
 
         updateLastModificationTimestamp();
     }
 
-    public void activateBook() {
-        this.deactivated = false;
+    public void unmarkAsRead() {
+        this.read = false;
 
         updateLastModificationTimestamp();
     }

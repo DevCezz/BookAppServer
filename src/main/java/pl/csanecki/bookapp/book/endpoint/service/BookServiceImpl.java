@@ -60,4 +60,14 @@ public class BookServiceImpl implements BookService {
            return b.toBook();
         });
     }
+
+    @Override
+    public Optional<Book> markAsRead(long bookId) {
+        Optional<BookRow> book = bookRepository.findById(bookId);
+
+        return book.map(b -> {
+            b.markAsRead();
+            return b.toBook();
+        });
+    }
 }
