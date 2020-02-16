@@ -55,4 +55,26 @@ public class BookController {
                 .map(b -> ResponseEntity.status(HttpStatus.OK).body(b.id))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
     }
+
+    @PutMapping(
+            value = "/{bookId}/read",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Book markBookAsRead(@PathVariable long bookId) {
+        return bookService.markAsRead(bookId)
+                .orElseThrow(
+                        () -> new NoBookFoundException(bookId)
+                );
+    }
+
+    @PutMapping(
+            value = "/{bookId}/unread",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Book unmarkBookAsRead(@PathVariable long bookId) {
+        return bookService.unmarkAsRead(bookId)
+                .orElseThrow(
+                        () -> new NoBookFoundException(bookId)
+                );
+    }
 }

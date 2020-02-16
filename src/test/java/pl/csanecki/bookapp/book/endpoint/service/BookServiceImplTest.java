@@ -137,4 +137,38 @@ class BookServiceImplTest {
         assertEquals(created.id, deleted.get().id);
         assertEquals(0, numberOfBooks);
     }
+
+    @Test
+    void shouldBookBeMarkedAsRead() {
+        // given
+        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
+                "Media Rodzina", "2008", 368));
+
+        // when
+        final Optional<Book> read = bookService.markAsRead(created.id);
+
+        if(read.isEmpty()) {
+            fail();
+        }
+
+        // then
+        assertTrue(read.get().read);
+    }
+
+    @Test
+    void shouldBookBeUnmarkedAsRead() {
+        // given
+        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
+                "Media Rodzina", "2008", 368));
+
+        // when
+        final Optional<Book> unread = bookService.unmarkAsRead(created.id);
+
+        if(unread.isEmpty()) {
+            fail();
+        }
+
+        // then
+        assertFalse(unread.get().read);
+    }
 }
