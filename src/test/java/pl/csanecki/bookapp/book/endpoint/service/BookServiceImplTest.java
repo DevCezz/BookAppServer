@@ -45,7 +45,7 @@ class BookServiceImplTest {
     }
 
     @Test
-    void shouldReturnIdOfBookWhenNewBookIsAdded() {
+    void shouldReturnedBookNotBeNullWhenItIsAdded() {
         // when
         final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
                 "Media Rodzina", "2008", 368));
@@ -55,7 +55,7 @@ class BookServiceImplTest {
     }
 
     @Test
-    void shouldReturnAddedBookWhenAdded() {
+    void shouldReturnAddedBookWhenItIsAdded() {
         // given
         final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
                 "Media Rodzina", "2008", 368));
@@ -68,7 +68,7 @@ class BookServiceImplTest {
     }
 
     @Test
-    void shouldReturnedBookHasTheSameFieldsValuesAsNewBook() {
+    void shouldReturnedBookHasTheSameFieldsValuesAsNewBookForm() {
         // given
         final BookForm bookForm = new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
                 "Media Rodzina", "2008", 368);
@@ -85,7 +85,7 @@ class BookServiceImplTest {
     }
 
     @Test
-    void shouldReturnAddedBookWhichHasIdAndThereAreTwoBooks() {
+    void shouldReturnAddedBooksWhichHaveDifferentIdsAndSizeIsTwo() {
         // when
         final Book firstCreated = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
                 "Media Rodzina", "2008", 368));
@@ -95,27 +95,6 @@ class BookServiceImplTest {
         // then
         assertNotEquals(firstCreated.id, secondCreated.id);
         assertEquals(2, bookService.getAllBooks().size());
-    }
-
-    @Test
-    void shouldReturnBookById() {
-        // given
-        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
-                "Media Rodzina", "2008", 368));
-
-        // when
-        final Optional<Book> searched = bookService.getBookById(created.id);
-
-        if(searched.isEmpty()) {
-            fail();
-        }
-
-        // then
-        assertEquals(created.title, searched.get().title);
-        assertEquals(created.author, searched.get().author);
-        assertEquals(created.publisher, searched.get().publisher);
-        assertEquals(created.publicationYear, searched.get().publicationYear);
-        assertEquals(created.numberOfPages, searched.get().numberOfPages);
     }
 
     @Test
@@ -129,57 +108,14 @@ class BookServiceImplTest {
         // when
         bookService.changeBookData(created.id, editedData);
 
-        final Optional<Book> checkDbBook = bookService.getBookById(created.id);
-
-        if(checkDbBook.isEmpty()) {
-            fail();
-        }
+        final List<Book> all = bookService.getAllBooks();
 
         // then
-        assertEquals(editedData.title, checkDbBook.get().title);
-        assertEquals(editedData.author, checkDbBook.get().author);
-        assertEquals(editedData.publisher, checkDbBook.get().publisher);
-        assertEquals(editedData.publicationYear, checkDbBook.get().publicationYear);
-        assertEquals(editedData.numberOfPages, checkDbBook.get().numberOfPages);
-    }
-
-    @Test
-    void shouldDeactivateBook() {
-        // given
-        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
-                "Media Rodzina", "2008", 368));
-
-        // when
-        bookService.deactivateBook(created.id);
-
-        final Optional<Book> checkDbBook = bookService.getBookById(created.id);
-
-        if(checkDbBook.isEmpty()) {
-            fail();
-        }
-
-        // then
-        assertTrue(checkDbBook.get().deactivated);
-    }
-
-    @Test
-    void shouldActivateDeactivatedBook() {
-        // given
-        final Book created = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
-                "Media Rodzina", "2008", 368));
-        bookService.deactivateBook(created.id);
-
-        // when
-        bookService.activateBook(created.id);
-
-        final Optional<Book> checkDbBook = bookService.getBookById(created.id);
-
-        if(checkDbBook.isEmpty()) {
-            fail();
-        }
-
-        // then
-        assertFalse(checkDbBook.get().deactivated);
+        assertEquals(editedData.title, all.head().title);
+        assertEquals(editedData.author, all.head().author);
+        assertEquals(editedData.publisher, all.head().publisher);
+        assertEquals(editedData.publicationYear, all.head().publicationYear);
+        assertEquals(editedData.numberOfPages, all.head().numberOfPages);
     }
 
     @Test
@@ -200,22 +136,5 @@ class BookServiceImplTest {
         // then
         assertEquals(created.id, deleted.get().id);
         assertEquals(0, numberOfBooks);
-    }
-
-    @Test
-    void shouldDeleteDeactivatedBooks() {
-        // given
-        final Book firstCreated = bookService.addBook(new BookForm("Harry Potter i Komnata Tajemnic", "J.K. Rownling",
-                "Media Rodzina", "2008", 368));
-
-        bookService.addBook(new BookForm("Wiedźmin: Ostatnie życzenie","Andrzej Sapkowski",
-                "SuperNowa", "2014", 332));
-        bookService.deactivateBook(firstCreated.id);
-
-        // when
-        bookService.deleteAllDeactivatedBooks();
-
-        // then
-        assertEquals(1, bookService.getAllBooks().size());
     }
 }

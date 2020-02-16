@@ -1,0 +1,6 @@
+Aplikacja do zarządzania książkami (do przeczytania i przeczytanymi):
+	- możliwość wyświetlenia wszystkich książek
+	- możliwość dodania nowej ksiązki do przeczytania
+	- możliowść edytowania danych książki
+	- oznaczenie/odznaczenie książki jak przeczytanej
+	- usunięcie książki w razie pomyłki przy dodaniu

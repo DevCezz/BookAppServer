@@ -4,12 +4,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import pl.csanecki.bookapp.book.endpoint.response.NoBookFoundException;
 import pl.csanecki.bookapp.book.endpoint.model.Book;
 import pl.csanecki.bookapp.book.endpoint.model.BookForm;
+import pl.csanecki.bookapp.book.endpoint.response.NoBookFoundException;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/books")
@@ -26,17 +25,6 @@ public class BookController {
     )
     public List<Book> getAllBooks() {
         return bookService.getAllBooks().asJava();
-    }
-
-    @GetMapping(
-            value = "/{bookId}",
-            produces = MediaType.APPLICATION_JSON_VALUE
-    )
-    public Book getBookById(@PathVariable long bookId) {
-        return bookService.getBookById(bookId)
-                .orElseThrow(
-                        () -> new NoBookFoundException(bookId)
-                );
     }
 
     @PostMapping(
@@ -66,32 +54,5 @@ public class BookController {
         return bookService.deleteBookById(bookId)
                 .map(b -> ResponseEntity.status(HttpStatus.OK).body(b.id))
                 .orElse(ResponseEntity.status(HttpStatus.NOT_FOUND).build());
-    }
-
-    @PostMapping(
-            value = "/{bookId}/deactivate"
-    )
-    public Book deactivateBook(@PathVariable long bookId) {
-        return bookService.deactivateBook(bookId)
-                .orElseThrow(
-                        () -> new NoBookFoundException(bookId)
-                );
-    }
-
-    @PostMapping(
-            value = "/{bookId}/activate"
-    )
-    public Book activateBook(@PathVariable long bookId) {
-        return bookService.activateBook(bookId)
-                .orElseThrow(
-                        () -> new NoBookFoundException(bookId)
-                );
-    }
-
-    @DeleteMapping(
-            value = "/deactivated"
-    )
-    public void deleteDeactivatedBooks() {
-        bookService.deleteAllDeactivatedBooks();
     }
 }
