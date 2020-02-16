@@ -13,4 +13,5 @@ public interface BookService {
     Optional<Book> deleteBookById(long bookId);
 
     Optional<Book> markAsRead(long bookId);
+    Optional<Book> unmarkAsRead(long bookId);
 }

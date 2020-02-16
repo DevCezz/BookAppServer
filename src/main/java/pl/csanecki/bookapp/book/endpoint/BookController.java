@@ -66,4 +66,15 @@ public class BookController {
                         () -> new NoBookFoundException(bookId)
                 );
     }
+
+    @PutMapping(
+            value = "/{bookId}/unread",
+            produces = MediaType.APPLICATION_JSON_VALUE
+    )
+    public Book unmarkBookAsRead(@PathVariable long bookId) {
+        return bookService.unmarkAsRead(bookId)
+                .orElseThrow(
+                        () -> new NoBookFoundException(bookId)
+                );
+    }
 }
