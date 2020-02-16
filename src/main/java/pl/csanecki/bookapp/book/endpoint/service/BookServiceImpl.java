@@ -28,12 +28,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> getBookById(long bookId) {
-        return bookRepository.findById(bookId)
-                .map(BookRow::toBook);
-    }
-
-    @Override
     public Book addBook(BookForm bookForm) {
         BookRow createdBook = bookRepository.save(new BookRow(
                 bookForm.title,
@@ -58,28 +52,6 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Optional<Book> deactivateBook(long bookId) {
-        final Optional<BookRow> book = bookRepository.findById(bookId);
-
-        return book.map(b -> {
-                    b.deactivateBook();
-                    return b.toBook();
-                }
-        );
-    }
-
-    @Override
-    public Optional<Book> activateBook(long bookId) {
-        final Optional<BookRow> book = bookRepository.findById(bookId);
-
-        return book.map(b -> {
-                    b.activateBook();
-                    return b.toBook();
-                }
-        );
-    }
-
-    @Override
     public Optional<Book> deleteBookById(long bookId) {
         Optional<BookRow> book = bookRepository.findById(bookId);
 
@@ -87,10 +59,5 @@ public class BookServiceImpl implements BookService {
            bookRepository.delete(b);
            return b.toBook();
         });
-    }
-
-    @Override
-    public void deleteAllDeactivatedBooks() {
-        bookRepository.deleteByDeactivatedIsTrue();
     }
 }
